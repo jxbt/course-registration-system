@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .search-container {
+            margin-top: 50px;
+        }
+        .search-form {
+            margin-bottom: 30px;
+        }
+        .course-list {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    {% include 'registration/navbar.html' %}
+    <div class="container search-container">
+        <h2>Search for Courses</h2>
+        <form method="get" class="search-form">
+            <div class="form-group">
+                {% if query %}
+                    <input type="text" name="q" class="form-control" placeholder="Search by course code, name, or instructor" value="{{ query }}">
+                {% else %}
+                    <input type="text" name="q" class="form-control" placeholder="Search by course code, name, or instructor">
+                {% endif %}
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+        <div class="course-list">
+            {% if results %}
+                <h3>Search Results</h3>
+                <ul class="list-group">
+                    {% for course in results %}
+                        <li class="list-group-item">
+                            <strong><a href="{% url 'course_detail' course.id %}">{{ course.name }}</a></strong> ({{ course.code }})<br>
+                            Instructor: {{ course.instructor }}<br>
+                            Description: {{ course.description|truncatewords:20 }}<br>
+                            Schedule: {{ course.schedule.days }} {{ course.schedule.start_time }} - {{ course.schedule.end_time }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                {% if query %}
+                    <p>No courses found for "{{ query }}".</p>
+                {% else %}
+                    <p>Enter a search term to find courses.</p>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

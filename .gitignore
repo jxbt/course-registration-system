@@ -1,0 +1,6 @@
+.env
+.venv/*
+*/__pycache__/*
+*/migrations/*
+db.sqlite3
+registration/templatetags/__pycache__/*
